@@ -1,0 +1,116 @@
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-family: var(--font-family-base);
+  text-decoration: none;
+  min-height: 44px;
+  gap: var(--spacing-sm);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.btn:not(:disabled):active {
+  transform: translateY(0);
+}
+
+/* Primary Button Style */
+.btn.primary {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 6px rgba(37, 99, 235, 0.25);
+}
+
+.btn.primary:not(:disabled):hover {
+  background: var(--color-primary-dark);
+  box-shadow: 0 8px 15px rgba(37, 99, 235, 0.4);
+}
+
+/* Secondary Button Style */
+.btn.secondary {
+  background: var(--color-secondary);
+  color: white;
+  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.25);
+}
+
+.btn.secondary:not(:disabled):hover {
+  background: var(--color-secondary-dark);
+  box-shadow: 0 8px 15px rgba(16, 185, 129, 0.4);
+}
+
+/* Secondary Outline Button */
+.btn.secondary-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  box-shadow: none;
+}
+
+.btn.secondary-outline:not(:disabled):hover {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25);
+}
+
+/* White Outline Button (for dark backgrounds) */
+.btn.outline-white {
+  background: transparent;
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+}
+
+.btn.outline-white:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Danger Button */
+.btn.danger {
+  background: var(--color-danger);
+  color: white;
+  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.25);
+}
+
+.btn.danger:not(:disabled):hover {
+  background: var(--color-danger-dark);
+  box-shadow: 0 8px 15px rgba(239, 68, 68, 0.4);
+}
+
+/* Full Width Option */
+.btn.full-width {
+  width: 100%;
+}
+
+/* Size Variations */
+.btn.small {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  min-height: 36px;
+}
+
+.btn.large {
+  padding: 16px 32px;
+  font-size: 1.125rem;
+  min-height: 52px;
+}

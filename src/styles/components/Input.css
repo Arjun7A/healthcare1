@@ -1,0 +1,44 @@
+.input-group {
+  margin-bottom: 20px; /* More vertical spacing */
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 8px; /* Spacing between label and field */
+  font-weight: 500; /* Medium weight */
+  color: var(--color-text-dark);
+  font-size: 0.9em;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px 15px; /* More padding for a softer feel */
+  border: 1px solid var(--color-border);
+  border-radius: 8px; /* Softer rounded corners */
+  font-size: 1em;
+  color: var(--color-text-dark);
+  background-color: var(--color-background-card);
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+.input-field::placeholder {
+  color: var(--color-text-medium); /* Lighter placeholder color */
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* More prominent, soft focus ring */
+}
+
+.input-field.input-error {
+  border-color: var(--color-danger);
+}
+
+.input-error-message {
+  color: var(--color-danger);
+  font-size: 0.8em;
+  margin-top: 6px;
+  font-weight: 500;
+}
