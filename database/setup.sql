@@ -7,6 +7,9 @@ DROP TABLE IF EXISTS mood_entries CASCADE;
 DROP TABLE IF EXISTS mood_settings CASCADE;
 DROP TABLE IF EXISTS symptom_reports CASCADE;
 DROP TABLE IF EXISTS diagnosis_logs CASCADE;
+DROP TABLE IF EXISTS prescription_analyses CASCADE;
+DROP TABLE IF EXISTS medication_searches CASCADE;
+DROP TABLE IF EXISTS health_reports CASCADE;
 
 -- Enable UUID extension for unique IDs
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -70,6 +73,43 @@ CREATE TABLE diagnosis_logs (
 );
 
 -- =========================
+-- PRESCRIPTION AND MEDICATION TABLES
+-- =========================
+
+CREATE TABLE prescription_analyses (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+    prescription_text TEXT NOT NULL,
+    analysis_result JSONB NOT NULL,
+    user_profile JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE medication_searches (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+    medication_name VARCHAR(255) NOT NULL,
+    medication_info JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- =========================
+-- HEALTH REPORTS TABLE
+-- =========================
+
+CREATE TABLE health_reports (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+    report_type VARCHAR(50) NOT NULL, -- 'symptom_summary', 'medication_summary', 'prescription_analysis'
+    report_data JSONB NOT NULL,
+    conditions_summary TEXT[],
+    medications_summary TEXT[],
+    generated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- =========================
 -- ENABLE ROW LEVEL SECURITY
 -- =========================
 
@@ -77,6 +117,9 @@ ALTER TABLE mood_entries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE mood_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE symptom_reports ENABLE ROW LEVEL SECURITY;
 ALTER TABLE diagnosis_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE prescription_analyses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE medication_searches ENABLE ROW LEVEL SECURITY;
+ALTER TABLE health_reports ENABLE ROW LEVEL SECURITY;
 
 -- =========================
 -- MOOD POLICIES
@@ -132,6 +175,50 @@ CREATE POLICY "Users can delete their own diagnosis logs"
 ON diagnosis_logs FOR DELETE USING (auth.uid() = user_id);
 
 -- =========================
+-- PRESCRIPTION AND MEDICATION POLICIES
+-- =========================
+
+CREATE POLICY "Users can view their own prescription analyses" 
+ON prescription_analyses FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own prescription analyses" 
+ON prescription_analyses FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own prescription analyses" 
+ON prescription_analyses FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own prescription analyses" 
+ON prescription_analyses FOR DELETE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can view their own medication searches" 
+ON medication_searches FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own medication searches" 
+ON medication_searches FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own medication searches" 
+ON medication_searches FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own medication searches" 
+ON medication_searches FOR DELETE USING (auth.uid() = user_id);
+
+-- =========================
+-- HEALTH REPORTS POLICIES
+-- =========================
+
+CREATE POLICY "Users can view their own health reports" 
+ON health_reports FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own health reports" 
+ON health_reports FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own health reports" 
+ON health_reports FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own health reports" 
+ON health_reports FOR DELETE USING (auth.uid() = user_id);
+
+-- =========================
 -- INDEXES FOR PERFORMANCE
 -- =========================
 
@@ -140,6 +227,12 @@ CREATE INDEX mood_entries_date_idx ON mood_entries(date);
 CREATE INDEX symptom_reports_user_id_idx ON symptom_reports(user_id);
 CREATE INDEX diagnosis_logs_user_id_idx ON diagnosis_logs(user_id);
 CREATE INDEX diagnosis_logs_symptom_report_idx ON diagnosis_logs(symptom_report_id);
+CREATE INDEX prescription_analyses_user_id_idx ON prescription_analyses(user_id);
+CREATE INDEX prescription_analyses_created_at_idx ON prescription_analyses(created_at DESC);
+CREATE INDEX medication_searches_user_id_idx ON medication_searches(user_id);
+CREATE INDEX medication_searches_created_at_idx ON medication_searches(created_at DESC);
+CREATE INDEX health_reports_user_id_idx ON health_reports(user_id);
+CREATE INDEX health_reports_created_at_idx ON health_reports(created_at DESC);
 
 -- =========================
 -- SAMPLE DATA (OPTIONAL)

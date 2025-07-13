@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/useAuth';
 import Button from '../components/common/Button';
 import SymptomChecker from '../components/features/health/SymptomChecker';
 import PrescriptionExplainer from '../components/features/health/PrescriptionExplainer';
-import MedicineExplainer from '../components/features/health/MedicineExplainer_new';
+import MedicineExplainer from '../components/features/health/MedicineExplainer';
 import HealthReports from '../components/features/health/HealthReports';
 import MoodJournal from '../components/features/mood/MoodJournal';
 import MoodInsights from '../components/features/mood/MoodInsights';
